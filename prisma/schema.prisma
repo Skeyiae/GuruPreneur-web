@@ -1,0 +1,37 @@
+// ------------------------------------------------------
+// Prisma Schema - Mentor & Student System
+// ------------------------------------------------------
+
+datasource db {
+  provider = "postgresql" // Ganti jika pakai MySQL/SQLite
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ------------------------------------------------------
+// STUDENT Model
+// ------------------------------------------------------
+model Student {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now()) // kapan register
+}
+
+// ------------------------------------------------------
+// MENTOR Model
+// ------------------------------------------------------
+model Mentor {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  phone     String?  // no hp
+  age       Int?     // usia
+  skill     String?  // keahlian
+  location  String?  // tempat tinggal
+  createdAt DateTime @default(now())
+}
+
