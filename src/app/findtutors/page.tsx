@@ -1,3 +1,9 @@
-export default function Page() {
-  return <div>find tutors</div>;
+import HeroCarousel from "@/components/herocorousal";
+
+export default function FindTutorsPage() {
+  return (
+    <main className="p-10">
+      <HeroCarousel />
+    </main>
+  );
 }
