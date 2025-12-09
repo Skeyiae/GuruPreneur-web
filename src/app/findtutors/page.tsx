@@ -1,4 +1,4 @@
-import HeroCarousel from "@/components/herocorousal";
+import HeroCarousel from "@/components/homepageimage";
 
 export default function FindTutorsPage() {
   return (
