@@ -14,8 +14,18 @@ export async function GET() {
     });
 
     return NextResponse.json(courses);
-  } catch (error) {
-    console.error("Failed to fetch courses:", error);
-    return NextResponse.json({ error: "Failed to fetch courses" }, { status: 500 });
+  } catch (error: any) {
+    // ✅ Tambah logging lebih jelas
+    console.error("❌ Failed to fetch courses:", error);
+    
+    // ✅ Kembalikan error detail supaya di browser kelihatan
+    return NextResponse.json(
+      { 
+        error: true, 
+        message: error.message, 
+        // stack: error.stack // uncomment ini kalau mau detail stack di dev
+      }, 
+      { status: 500 }
+    );
   }
 }
