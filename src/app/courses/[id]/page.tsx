@@ -1,28 +1,48 @@
+// app/courses/[id]/page.tsx
 import { prisma } from "@/../lib/prisma";
 
 type PageProps = {
-  params: Promise<{ id: string }>;
+  params: { id: string }; // params langsung object, tidak pakai Promise
+};
+
+// Type-safe DTO untuk course + nested relations
+type CourseWithRelations = {
+  id: number;
+  title: string;
+  description: string;
+  price: number | null;
+  benefits?: string[]; // optional
+  tutor: {
+    fullName?: string | null;
+    bio?: string | null;
+    skills?: string[]; // optional
+  };
+  chapters: { id: number; title: string }[];
 };
 
 export default async function CourseDetailPage({ params }: PageProps) {
-  const { id } = await params;
-  const courseId = Number(id);
+  const courseId = Number(params.id);
 
   if (isNaN(courseId)) {
     return <div className="p-10 text-red-500">Invalid course id</div>;
   }
 
-  const course = await prisma.course.findUnique({
+  const course = (await prisma.course.findUnique({
     where: { id: courseId },
     include: {
       tutor: true,
       chapters: true,
+      // jika benefits itu relation, include juga
+      // benefits: true, 
     },
-  });
+  })) as unknown as CourseWithRelations;
 
   if (!course) {
     return <div className="p-10 text-red-500">Course not found</div>;
   }
+
+  const benefits = course.benefits ?? [];
+  const skills = course.tutor.skills ?? [];
 
   return (
     <div className="w-full bg-gray-50">
@@ -49,7 +69,9 @@ export default async function CourseDetailPage({ params }: PageProps) {
             <div>
               <p className="text-sm text-gray-500">Harga Course</p>
               <p className="text-2xl font-bold text-gray-900">
-                {course.price === 0 ? "Gratis" : `Rp ${course.price.toLocaleString("id-ID")}`}
+                {!course.price || course.price === 0
+                  ? "Gratis"
+                  : `Rp ${course.price.toLocaleString("id-ID")}`}
               </p>
             </div>
 
@@ -65,11 +87,11 @@ export default async function CourseDetailPage({ params }: PageProps) {
       </section>
 
       {/* ================= BENEFITS ================= */}
-      {course.benefits.length > 0 && (
+      {benefits.length > 0 && (
         <section className="py-12 px-4 sm:px-6 lg:px-64">
           <h2 className="text-2xl font-bold mb-6">Yang Akan Kamu Dapatkan</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {course.benefits.map((benefit, index) => (
+            {benefits.map((benefit, index) => (
               <div
                 key={index}
                 className="flex items-start gap-3 bg-white p-4 rounded-lg border"
@@ -123,9 +145,9 @@ export default async function CourseDetailPage({ params }: PageProps) {
               {course.tutor.bio ?? "Mentor berpengalaman di bidangnya dan siap membimbing kamu sampai bisa."}
             </p>
 
-            {course.tutor.skills.length > 0 && (
+            {skills.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
-                {course.tutor.skills.map((skill, i) => (
+                {skills.map((skill, i) => (
                   <span
                     key={i}
                     className="px-3 py-1 bg-gray-100 text-sm rounded-full"
