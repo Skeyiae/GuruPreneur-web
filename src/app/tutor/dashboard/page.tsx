@@ -13,9 +13,7 @@ export default async function TutorDashboard() {
     where: { clerkId: userId },
     include: {
       courses: {
-        include: {
-          chapters: true,
-        },
+        include: { chapters: true },
       },
     },
   });
@@ -35,6 +33,7 @@ export default async function TutorDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 py-10 space-y-10">
+
         {/* ================= TOP BAR ================= */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>

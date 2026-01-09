@@ -3,64 +3,73 @@
 import { useState } from "react";
 import CourseForm from "./courses/course-form";
 import type { CourseDTO } from "@/types/course";
-import Image from "next/image";
 
 type Props = {
   courses: CourseDTO[];
 };
 
 export default function TutorDashboardClient({ courses }: Props) {
+  const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState<CourseDTO | null>(null);
 
   return (
-    <div className="space-y-6">
-      {editing && (
+    <div className="space-y-4">
+      {/* CREATE COURSE BUTTON */}
+      <button
+        onClick={() => setCreating(true)}
+        className="px-4 py-2 bg-black text-white rounded"
+      >
+        + Create Course
+      </button>
+
+      {/* COURSE FORM MODAL */}
+      {(creating || editing) && (
         <CourseForm
-          courseId={editing.id}
-          initialData={{
-            title: editing.title,
-            description: editing.description,
-            imageUrl: editing.imageUrl ?? "",
+          courseId={editing?.id}
+          initialData={
+            editing
+              ? {
+                  title: editing.title,
+                  description: editing.description,
+                  imageUrl: editing.imageUrl ?? "",
+                }
+              : undefined
+          }
+          onClose={() => {
+            setCreating(false);
+            setEditing(null);
           }}
-          onClose={() => setEditing(null)}
         />
       )}
 
-      <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* COURSE LIST */}
+      <ul className="grid md:grid-cols-3 gap-4">
         {courses.map((course) => (
-          <li key={course.id} className="bg-white border rounded-2xl shadow-sm p-4 flex flex-col">
-            {/* IMAGE */}
-            {course.imageUrl ? (
+          <li key={course.id} className="border p-4 rounded space-y-2">
+            {course.imageUrl && (
               <div className="relative h-40 w-full">
-                <Image
+                <img
                   src={course.imageUrl}
                   alt={course.title}
-                  fill
-                  className="object-cover rounded-xl"
+                  className="w-full h-full object-cover rounded"
                 />
-              </div>
-            ) : (
-              <div className="h-40 bg-gray-100 flex items-center justify-center text-gray-400 text-sm rounded-xl">
-                No Image
               </div>
             )}
 
-            {/* CONTENT */}
-            <h3 className="font-semibold text-lg mt-3 line-clamp-2">{course.title}</h3>
-            <p className="text-sm text-gray-600 mt-1 line-clamp-2 flex-1">
-              {course.description || "No description"}
+            <h3 className="font-semibold">{course.title}</h3>
+            <p className="text-sm text-gray-600 line-clamp-2">
+              {course.description}
             </p>
 
-            {/* ACTIONS */}
-            <div className="flex gap-3 mt-3">
+            <div className="flex gap-3 text-sm mt-2">
               <button
-                className="text-blue-600 text-sm"
+                className="text-blue-600"
                 onClick={() => setEditing(course)}
               >
                 Edit
               </button>
               <button
-                className="text-red-600 text-sm"
+                className="text-red-600"
                 onClick={async () => {
                   await fetch(`/api/tutor/courses/${course.id}`, {
                     method: "DELETE",
