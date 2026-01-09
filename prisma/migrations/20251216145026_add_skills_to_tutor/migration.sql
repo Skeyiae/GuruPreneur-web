@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Tutor" ALTER COLUMN "skills" SET DEFAULT ARRAY[]::TEXT[];

@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Tutor {
+  id      Int    @id @default(autoincrement())
+  clerkId String @unique
+
+  // === PROFIL TUTOR ===
+  fullName       String? // dari TutorApplication
+  bio            String? // sudah ada (dipertahankan)
+  portfolio      String? // lama (1 link, opsional)
+  portfolioLinks String[] @default([]) // baru (multi link)
+  skills         String[] @default([])
+
+  // === STATUS ===
+  isActive  Boolean  @default(false) // aktif setelah approve
+  createdAt DateTime @default(now())
+
+  // === RELATION (JANGAN HILANG) ===
+  courses Course[]
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  tutor       Tutor    @relation(fields: [tutorId], references: [id])
+  tutorId     Int
+  title       String
+  description String
+  imageUrl    String?
+
+  price       Int      @default(0)        // harga course
+  benefits    String[] @default([])       // list manfaat
+
+  createdAt   DateTime @default(now())
+
+  chapters    Chapter[]
+  enrollments Enrollment[]
+}
+
+model Chapter{
+  id       Int    @id @default(autoincrement())
+  title    String
+
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+}
+
+model Enrollment {
+  id        Int      @id @default(autoincrement())
+  userId    String  // dari Clerk user
+  course    Course  @relation(fields: [courseId], references: [id])
+  courseId  Int
+
+  createdAt DateTime @default(now())
+}
+
+model TutorApplication {
+  id             Int                    @id @default(autoincrement())
+  clerkId        String
+  fullName       String
+  bio            String
+  portfolioLinks String[]
+  skills         String[]
+  teachingPlan   String
+  status         TutorApplicationStatus @default(PENDING)
+  rejectionReason String?
+  createdAt      DateTime               @default(now())
+  reviewedAt     DateTime?
+}
+
+enum TutorApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
