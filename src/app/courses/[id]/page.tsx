@@ -1,6 +1,8 @@
 // app/courses/[id]/page.tsx
 import { prisma } from "@/../lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 type PageProps = {
   params: { id: string }; // params langsung object, tidak pakai Promise
 };
