@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/../lib/prisma";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
 /* =========================
    VALIDATION SCHEMA
 ========================= */

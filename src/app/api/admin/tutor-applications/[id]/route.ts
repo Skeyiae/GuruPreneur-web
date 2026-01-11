@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/../lib/prisma";
 import { requireAdmin } from "@/lib/admin";
 
+export const dynamic = "force-dynamic";
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ id: string }> } 
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin();

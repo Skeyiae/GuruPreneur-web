@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/../lib/prisma";
 
+export const dynamic = "force-dynamic";
 // PUT Handler
 export async function PUT(
   req: NextRequest,

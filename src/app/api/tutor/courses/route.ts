@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/../lib/prisma";
 import { requireTutor } from "@/lib/require-tutor";
 
+export const dynamic = "force-dynamic";
 type CourseBody = {
   title: string;
   description: string;
