@@ -10,11 +10,7 @@ const url = process.env.guru_preneur_PRISMA_DATABASE_URL
     ?? "";
 
 const prisma = new PrismaClient({
-    datasources: {
-        db: {
-            url,
-        },
-    },
+    datasourceUrl: url,
 });
 
 export { prisma }
