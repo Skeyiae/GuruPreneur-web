@@ -1,43 +1,25 @@
-// app/courses/[id]/page.tsx
 import { prisma } from "@/../lib/prisma";
 
-export const dynamic = "force-dynamic";
-
 type PageProps = {
-  params: { id: string }; // params langsung object, tidak pakai Promise
-};
-
-// Type-safe DTO untuk course + nested relations
-type CourseWithRelations = {
-  id: number;
-  title: string;
-  description: string;
-  price: number | null;
-  benefits?: string[]; // optional
-  tutor: {
-    fullName?: string | null;
-    bio?: string | null;
-    skills?: string[]; // optional
-  };
-  chapters: { id: number; title: string }[];
+  params: Promise<{ id: string }>;
 };
 
 export default async function CourseDetailPage({ params }: PageProps) {
-  const courseId = Number(params.id);
+  const { id } = await params; //  WAJIB await
+
+  const courseId = Number(id);
 
   if (isNaN(courseId)) {
     return <div className="p-10 text-red-500">Invalid course id</div>;
   }
 
-  const course = (await prisma.course.findUnique({
+  const course = await prisma.course.findUnique({
     where: { id: courseId },
     include: {
       tutor: true,
       chapters: true,
-      // jika benefits itu relation, include juga
-      // benefits: true, 
     },
-  })) as unknown as CourseWithRelations;
+  });
 
   if (!course) {
     return <div className="p-10 text-red-500">Course not found</div>;
@@ -48,10 +30,9 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
   return (
     <div className="w-full bg-gray-50">
-      {/* ================= HERO SECTION ================= */}
+      {/* HERO */}
       <section className="bg-white py-12 px-4 sm:px-6 lg:px-64 border-b">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* LEFT */}
           <div className="md:col-span-2">
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               {course.title}
@@ -60,18 +41,18 @@ export default async function CourseDetailPage({ params }: PageProps) {
               {course.description}
             </p>
 
-            <div className="flex items-center gap-4 text-sm text-gray-500">
-              <span>👨‍🏫 Mentor: {course.tutor.fullName ?? "Mentor Profesional"}</span>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+              <span>👨‍🏫 Mentor: {course.tutor.fullName || "Mentor Profesional"}</span>
               <span>📚 {course.chapters.length} Materi</span>
             </div>
           </div>
 
-          {/* RIGHT - CARD */}
+          {/* CARD */}
           <div className="bg-white border rounded-xl shadow-sm p-6 flex flex-col gap-4">
             <div>
               <p className="text-sm text-gray-500">Harga Course</p>
               <p className="text-2xl font-bold text-gray-900">
-                {!course.price || course.price === 0
+                {course.price === 0
                   ? "Gratis"
                   : `Rp ${course.price.toLocaleString("id-ID")}`}
               </p>
@@ -88,7 +69,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* ================= BENEFITS ================= */}
+      {/* BENEFITS */}
       {benefits.length > 0 && (
         <section className="py-12 px-4 sm:px-6 lg:px-64">
           <h2 className="text-2xl font-bold mb-6">Yang Akan Kamu Dapatkan</h2>
@@ -106,7 +87,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
         </section>
       )}
 
-      {/* ================= MATERI / CHAPTERS ================= */}
+      {/* MATERI */}
       <section className="bg-white py-12 px-4 sm:px-6 lg:px-64 border-t border-b">
         <h2 className="text-2xl font-bold mb-6">Materi Pembelajaran</h2>
 
@@ -132,7 +113,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
         )}
       </section>
 
-      {/* ================= MENTOR ================= */}
+      {/* MENTOR */}
       <section className="py-12 px-4 sm:px-6 lg:px-64">
         <h2 className="text-2xl font-bold mb-6">Tentang Mentor</h2>
 
@@ -142,9 +123,12 @@ export default async function CourseDetailPage({ params }: PageProps) {
           </div>
 
           <div>
-            <h3 className="text-lg font-bold">{course.tutor.fullName ?? "Mentor Profesional"}</h3>
+            <h3 className="text-lg font-bold">
+              {course.tutor.fullName || "Mentor Profesional"}
+            </h3>
             <p className="text-gray-600 text-sm mt-1">
-              {course.tutor.bio ?? "Mentor berpengalaman di bidangnya dan siap membimbing kamu sampai bisa."}
+              {course.tutor.bio ||
+                "Mentor berpengalaman di bidangnya dan siap membimbing kamu sampai bisa."}
             </p>
 
             {skills.length > 0 && (

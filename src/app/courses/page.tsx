@@ -1,8 +1,6 @@
 import { prisma } from "@/../lib/prisma";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
-
 export default async function CoursesPage() {
   const courses = await prisma.course.findMany({
     include: {
@@ -18,7 +16,7 @@ export default async function CoursesPage() {
       <h1 className="text-3xl font-bold mb-8">All Courses</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {courses.map((course: any) => (
+        {courses.map((course) => (
           <Link
             key={course.id}
             href={`/courses/${course.id}`}
