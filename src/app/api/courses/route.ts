@@ -17,10 +17,10 @@ export async function GET() {
 
     return NextResponse.json(courses);
   } catch (error: any) {
-    // ✅ Tambah logging lebih jelas
-    console.error("❌ Failed to fetch courses:", error);
+    // Tambah logging lebih jelas
+    console.error("Failed to fetch courses:", error);
 
-    // ✅ Kembalikan error detail supaya di browser kelihatan
+    // Kembalikan error detail supaya di browser kelihatan
     return NextResponse.json(
       {
         error: true,
