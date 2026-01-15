@@ -84,7 +84,7 @@ export default function TutorStatusPage() {
             <Badge className="bg-green-600">APPROVED</Badge>
             <Alert>
               <AlertDescription>
-                🎉 Selamat! Kamu telah disetujui sebagai Tutor.
+                Selamat! Kamu telah disetujui sebagai Tutor.
               </AlertDescription>
             </Alert>
 
