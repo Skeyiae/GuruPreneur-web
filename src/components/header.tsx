@@ -16,17 +16,18 @@ export default function HeroSection() {
             alt="Background visual for hero section"
             fill
             priority
-            className="object-cover object-center"
+            className="object-cover object-center scale-105"
           />
           <figcaption className="sr-only">Hero Background</figcaption>
         </figure>
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/50" />
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/30" />
 
         {/* Content Section */}
-        <div className="absolute inset-0 flex items-center px-6 md:px-16">
-          <article className="bg-white/20 backdrop-blur-md text-white p-6 md:p-10 rounded-xl max-w-[90%] md:max-w-lg">
+        <div className="absolute inset-0 flex py-8 items-center px-6 md:px-16 z-10">
+          {/* Kotak blur hanya di article */}
+          <article className="relative bg-white/20 backdrop-blur-md text-white p-6 py-8 md:p-10 rounded-xl max-w-[90%] md:max-w-lg border border-white/30">
             <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold">
               Belajar Langsung dari Mentor Praktisi
             </h1>
