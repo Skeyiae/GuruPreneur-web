@@ -8,9 +8,8 @@ export async function POST(req: Request) {
     if (!clerkId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
     const { courseId } = await req.json();
-
+    
     // 1. cari user di DB
     const user = await prisma.user.findUnique({
       where: { clerkId },
@@ -31,6 +30,14 @@ export async function POST(req: Request) {
     if (existing) {
       return NextResponse.json({ error: "Already enrolled" }, { status: 400 });
     }
+
+    // 3. create enrollment
+    await prisma.enrollment.create({
+      data: {
+        userId: user.id,
+        courseId,
+      },
+    });
 
 
     return NextResponse.json({ success: true });
