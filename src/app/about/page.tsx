@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { HiLink, HiOutlineDesktopComputer, HiCheckCircle, HiGlobeAlt } from "react-icons/hi"; // import icon yang kita butuhkan
 
 export default function AboutPage() {
   return (
@@ -58,29 +59,29 @@ export default function AboutPage() {
               {
                 title: "Menghubungkan Murid & Tutor",
                 desc: "Kami mempertemukan murid dengan tutor yang sesuai dengan kebutuhan skill mereka.",
-                icon: "🔗",
+                icon: <HiLink className="text-4xl mb-4 text-blue-500" />,
               },
               {
                 title: "Pembelajaran Praktis",
                 desc: "Fokus pada praktik langsung, bukan hanya teori.",
-                icon: "🛠️",
+                icon: <HiOutlineDesktopComputer className="text-4xl mb-4 text-green-500" />,
               },
               {
                 title: "Verifikasi Tutor",
                 desc: "Setiap tutor melalui proses seleksi untuk menjaga kualitas.",
-                icon: "✅",
+                icon: <HiCheckCircle className="text-4xl mb-4 text-yellow-500" />,
               },
               {
                 title: "Fleksibel & Online",
                 desc: "Belajar kapan saja dan di mana saja sesuai jadwalmu.",
-                icon: "🌍",
+                icon: <HiGlobeAlt className="text-4xl mb-4 text-purple-500" />,
               },
             ].map((item, i) => (
               <div
                 key={i}
                 className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition"
               >
-                <div className="text-3xl mb-4">{item.icon}</div>
+                <div>{item.icon}</div>
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
                 <p className="text-gray-600">{item.desc}</p>
               </div>

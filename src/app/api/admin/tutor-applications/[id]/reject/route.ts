@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/../lib/prisma";
 import { requireAdmin } from "@/lib/admin";
 
-export const dynamic = "force-dynamic";
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -15,14 +14,14 @@ export async function POST(
     console.log("Reject applicationId:", applicationId);
 
     if (isNaN(applicationId)) {
-      console.error("❌ Invalid applicationId");
+      console.error("Invalid applicationId");
       return NextResponse.json({ message: "Invalid application id" }, { status: 400 });
     }
 
     const body = await req.json();
     const reason = body.reason;
     if (!reason) {
-      console.error("❌ Reject reason missing");
+      console.error("Reject reason missing");
       return NextResponse.json({ message: "Reject reason required" }, { status: 400 });
     }
 
@@ -31,12 +30,12 @@ export async function POST(
     });
 
     if (!application) {
-      console.error("❌ Application not found");
+      console.error("Application not found");
       return NextResponse.json({ message: "Application not found" }, { status: 404 });
     }
 
     if (application.status !== "PENDING") {
-      console.error("❌ Application already processed");
+      console.error("Application already processed");
       return NextResponse.json({ message: "Application already processed" }, { status: 400 });
     }
 
@@ -48,7 +47,7 @@ export async function POST(
     console.log("✅ Application rejected:", applicationId);
     return NextResponse.json({ success: true, message: "Tutor application rejected" });
   } catch (err: any) {
-    console.error("❌ Error rejecting application:", err);
+    console.error("Error rejecting application:", err);
     if (err.message === "FORBIDDEN") {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
