@@ -1,9 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import { prisma } from "@/../lib/prisma";
+import { prisma } from '@/../lib/prisma';
 import TutorDashboardClient from "./tutor-dashboard-client";
-
-export const dynamic = "force-dynamic";
 
 export default async function TutorDashboard() {
   // 1️⃣ AUTH
@@ -30,7 +28,7 @@ export default async function TutorDashboard() {
 
   const totalCourses = tutor.courses.length;
   const totalChapters = tutor.courses.reduce(
-    (acc: number, course: any) => acc + course.chapters.length,
+    (acc, course) => acc + course.chapters.length,
     0
   );
 
@@ -94,8 +92,9 @@ function StatCard({
 }) {
   return (
     <div
-      className={`rounded-2xl p-6 border shadow-sm ${highlight ? "bg-black text-white" : "bg-white"
-        }`}
+      className={`rounded-2xl p-6 border shadow-sm ${
+        highlight ? "bg-black text-white" : "bg-white"
+      }`}
     >
       <p className="text-sm opacity-70">{title}</p>
       <p className="text-3xl font-bold mt-2">{value}</p>
