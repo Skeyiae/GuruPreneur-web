@@ -67,12 +67,10 @@ export default async function TutorDashboard() {
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-gray-900">My Courses</h2>
           </div>
+          <TutorDashboardClient courses={tutor.courses} />
 
-          {totalCourses === 0 ? (
-            <EmptyState />
-          ) : (
-            <TutorDashboardClient courses={tutor.courses} />
-          )}
+          {totalCourses === 0 && <EmptyState />}
+
         </section>
       </div>
     </div>
