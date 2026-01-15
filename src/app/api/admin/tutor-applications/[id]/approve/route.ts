@@ -40,44 +40,77 @@ export async function POST(
       data: { status: "APPROVED", reviewedAt: new Date() },
     });
 
-    // 2️⃣ Pastikan user sudah ada
-    const user = await prisma.user.findUnique({
+    // 2️⃣ Create atau update user (upsert) - PERBAIKAN UTAMA
+    const user = await prisma.user.upsert({
+      where: { clerkId: application.clerkId },
+      update: {
+        role: "TUTOR", // Update role jika user sudah ada
+      },
+      create: {
+        clerkId: application.clerkId,
+        role: "TUTOR",
+      },
+    });
+
+    // 3️⃣ Cek apakah tutor sudah ada (untuk menghindari duplicate)
+    const existingTutor = await prisma.tutor.findUnique({
       where: { clerkId: application.clerkId },
     });
 
-    if (!user) {
-      console.error("User not found for clerkId:", application.clerkId);
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
-    // 3️⃣ Create tutor + CONNECT ke user
-    await prisma.tutor.create({
-      data: {
-        clerkId: application.clerkId,
-        fullName: application.fullName,
-        bio: application.bio,
-        portfolioLinks: application.portfolioLinks,
-        skills: application.skills,
-        isActive: true,
-
-        // 🔥 INI BAGIAN PENTING YANG KEMARIN HILANG
-        user: {
-          connect: {
-            id: user.id,
+    if (existingTutor) {
+      // Jika sudah ada, update saja
+      await prisma.tutor.update({
+        where: { id: existingTutor.id },
+        data: {
+          fullName: application.fullName,
+          bio: application.bio,
+          portfolioLinks: application.portfolioLinks,
+          skills: application.skills,
+          isActive: true,
+        },
+      });
+      console.log("✅ Tutor updated:", existingTutor.id);
+    } else {
+      // 4️⃣ Create tutor + CONNECT ke user
+      await prisma.tutor.create({
+        data: {
+          clerkId: application.clerkId,
+          fullName: application.fullName,
+          bio: application.bio,
+          portfolioLinks: application.portfolioLinks,
+          skills: application.skills,
+          isActive: true,
+          user: {
+            connect: {
+              id: user.id,
+            },
           },
         },
-      },
-    });
+      });
+      console.log("✅ Tutor created for user:", user.id);
+    }
 
     console.log("✅ Application approved & tutor created:", applicationId);
     return NextResponse.json({ success: true, message: "Tutor approved & activated" });
   } catch (err: any) {
     console.error("Error approving application:", err);
+    console.error("Error details:", err.message, err.code);
 
     if (err.message === "FORBIDDEN") {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    // Handle Prisma unique constraint errors
+    if (err.code === "P2002") {
+      return NextResponse.json({ 
+        message: "Tutor already exists with this clerkId",
+        error: err.meta 
+      }, { status: 409 });
+    }
+
+    return NextResponse.json({ 
+      message: "Internal server error", 
+      error: err.message 
+    }, { status: 500 });
   }
 }
