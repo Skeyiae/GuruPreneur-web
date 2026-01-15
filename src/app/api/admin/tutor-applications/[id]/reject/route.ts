@@ -44,7 +44,7 @@ export async function POST(
       data: { status: "REJECTED", rejectionReason: reason, reviewedAt: new Date() },
     });
 
-    console.log("✅ Application rejected:", applicationId);
+    console.log("Application rejected:", applicationId);
     return NextResponse.json({ success: true, message: "Tutor application rejected" });
   } catch (err: any) {
     console.error("Error rejecting application:", err);

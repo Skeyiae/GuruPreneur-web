@@ -10,7 +10,7 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
     });
 
-    console.log("✅ Fetched all tutor applications:", applications.length);
+    console.log("Fetched all tutor applications:", applications.length);
 
     return NextResponse.json(applications);
   } catch (err: any) {
