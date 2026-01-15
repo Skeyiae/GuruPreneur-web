@@ -1,48 +1,29 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/../lib/prisma";
 
-export const dynamic = "force-dynamic";
 export async function GET() {
   try {
-    // 1️⃣ AUTH
-    const session = await auth();
-    const userId = session.userId;
-
-    if (!userId) {
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
-    // 2️⃣ FIND APPLICATION
-    const application = await prisma.tutorApplication.findFirst({
-      where: {
-        clerkId: userId,
-      },
+    const courses = await prisma.course.findMany({
       select: {
-        status: true,
-        createdAt: true,
-        reviewedAt: true,
+        id: true,
+        title: true,
+        description: true,
+        imageUrl: true,
       },
+      orderBy: { id: "desc" },
     });
 
-    // 3️⃣ BELUM APPLY
-    if (!application) {
-      return NextResponse.json(
-        { message: "Tutor application not found" },
-        { status: 404 }
-      );
-    }
-
-    // 4️⃣ SUCCESS
-    return NextResponse.json(application);
-  } catch (error) {
-    console.error("GET TUTOR APPLICATION ERROR:", error);
-
+    // 🔒 hardening (opsional tapi aman)
     return NextResponse.json(
-      { message: "Internal server error" },
+      courses.map(c => ({
+        ...c,
+        id: Number(c.id),
+      }))
+    );
+  } catch (error: any) {
+    console.error("Failed to fetch courses:", error);
+    return NextResponse.json(
+      { error: true, message: error.message },
       { status: 500 }
     );
   }
