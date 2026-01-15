@@ -1,5 +1,6 @@
 // app/courses/[id]/page.tsx
 import { prisma } from "@/../lib/prisma";
+import EnrollButton from "@/components/enroll-button";
 
 export const dynamic = "force-dynamic";
 
@@ -77,9 +78,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
               </p>
             </div>
 
-            <button className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition">
-              Daftar Sekarang
-            </button>
+            <EnrollButton courseId={course.id} />
 
             <p className="text-xs text-gray-500 text-center">
               Akses penuh setelah mendaftar
