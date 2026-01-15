@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
-import { prisma } from "@/../lib/prisma";
+import { prisma } from '@/../lib/prisma';
 import CourseForm from "../../course-form";
 
-export const dynamic = "force-dynamic";
 export default async function EditCoursePage({
   params,
 }: {
