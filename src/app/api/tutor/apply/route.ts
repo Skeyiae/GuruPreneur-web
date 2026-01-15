@@ -3,7 +3,6 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/../lib/prisma";
 import { z } from "zod";
 
-export const dynamic = "force-dynamic";
 /* =========================
    VALIDATION SCHEMA
 ========================= */
@@ -24,7 +23,7 @@ const TutorApplicationSchema = z.object({
 ========================= */
 export async function POST(req: Request) {
   try {
-    /* 1️⃣ AUTH */
+    /* AUTH */
     const { userId } = await auth();
 
     if (!userId) {
@@ -34,7 +33,7 @@ export async function POST(req: Request) {
       );
     }
 
-    /* 2️⃣ BODY */
+    /* BODY */
     const body = await req.json();
     const parsed = TutorApplicationSchema.safeParse(body);
 
@@ -51,7 +50,7 @@ export async function POST(req: Request) {
     const { fullName, bio, portfolioLinks, skills, teachingPlan } =
       parsed.data;
 
-    /* 3️⃣ CEK SUDAH APPLY ATAU BELUM */
+    /* CEK SUDAH APPLY ATAU BELUM */
     const existingApplication =
       await prisma.tutorApplication.findFirst({
         where: {
@@ -70,7 +69,7 @@ export async function POST(req: Request) {
       );
     }
 
-    /* 4️⃣ CREATE APPLICATION */
+    /* CREATE APPLICATION */
     const application = await prisma.tutorApplication.create({
       data: {
         clerkId: userId,
@@ -82,7 +81,7 @@ export async function POST(req: Request) {
       },
     });
 
-    /* 5️⃣ RESPONSE */
+    /* RESPONSE */
     return NextResponse.json(
       {
         message: "Tutor application submitted successfully",
