@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/../lib/prisma";
 import { requireAdmin } from "@/lib/admin";
 
-export const dynamic = "force-dynamic";
-
 export async function GET() {
   try {
     await requireAdmin();
@@ -16,7 +14,7 @@ export async function GET() {
 
     return NextResponse.json(applications);
   } catch (err: any) {
-    console.error("❌ Error fetching applications:", err);
+    console.error("Error fetching applications:", err);
     if (err.message === "FORBIDDEN") {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
