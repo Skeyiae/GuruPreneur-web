@@ -14,7 +14,7 @@ export default function CourseList() {
       .then((data: CourseDTO[]) => {
         setCourses(data);
       })
-      .catch(err => console.error("❌ Failed to fetch courses:", err))
+      .catch(err => console.error("Failed to fetch courses:", err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -35,7 +35,7 @@ export default function CourseList() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {courses.map(course => {
-            // 🔒 FINAL GUARD
+            //  FINAL GUARD
             if (typeof course.id !== "number") return null;
 
             return (

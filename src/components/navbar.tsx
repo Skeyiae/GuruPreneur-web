@@ -71,7 +71,7 @@ export default function Navbar() {
             </a>
           </li>
 
-          {/* ================= TUTOR LOGIC ================= */}
+          {/*  TUTOR LOGIC  */}
 
           {!loadingTutor && userId && !tutorStatus.isTutor && (
             <li>

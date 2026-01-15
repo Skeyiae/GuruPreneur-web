@@ -42,7 +42,7 @@ export default function CourseForm({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // 🛑 VALIDASI FRONTEND
+    // VALIDASI FRONTEND
     if (!ALLOWED_TYPES.includes(file.type)) {
       alert("Only JPG, PNG, or WEBP allowed");
       return;
