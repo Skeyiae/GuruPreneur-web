@@ -1,34 +1,36 @@
+import { FaGamepad, FaBriefcase, FaChalkboardTeacher, FaFolderOpen, FaPalette, FaClock } from "react-icons/fa";
+
 export default function BenefitsPage() {
   const benefits = [
     {
       title: "Skill Industri Nyata",
       desc: "Pelajari Blender 3D dengan standar industri yang digunakan di game, film, arsitektur, dan animasi profesional.",
-      icon: "🎮",
+      icon: <FaGamepad className="w-12 h-12 text-indigo-500 mb-4" />,
     },
     {
       title: "Peluang Karier Luas",
       desc: "Buka jalan menjadi 3D Artist, Game Asset Designer, Animator, hingga Freelance 3D Creator.",
-      icon: "💼",
+      icon: <FaBriefcase className="w-12 h-12 text-indigo-500 mb-4" />,
     },
     {
       title: "Belajar dari Praktisi",
       desc: "Dibimbing langsung oleh mentor berpengalaman yang aktif di dunia kerja, bukan sekadar teori.",
-      icon: "👨‍🏫",
+      icon: <FaChalkboardTeacher className="w-12 h-12 text-indigo-500 mb-4" />,
     },
     {
       title: "Portofolio Siap Pakai",
       desc: "Setiap project yang kamu buat bisa langsung dijadikan portofolio untuk melamar kerja atau freelance.",
-      icon: "📁",
+      icon: <FaFolderOpen className="w-12 h-12 text-indigo-500 mb-4" />,
     },
     {
       title: "Kreativitas Tanpa Batas",
       desc: "Tuangkan ide kreatifmu ke dalam bentuk 3D: karakter, environment, product visual, dan lainnya.",
-      icon: "🎨",
+      icon: <FaPalette className="w-12 h-12 text-indigo-500 mb-4" />,
     },
     {
       title: "Belajar Fleksibel",
       desc: "Atur jadwal belajar sesuai waktu luangmu, bisa dari mana saja dan kapan saja.",
-      icon: "⏰",
+      icon: <FaClock className="w-12 h-12 text-indigo-500 mb-4" />,
     },
   ];
 
@@ -49,9 +51,9 @@ export default function BenefitsPage() {
         {benefits.map((item, index) => (
           <div
             key={index}
-            className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all"
+            className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all text-center"
           >
-            <div className="text-4xl mb-4">{item.icon}</div>
+            {item.icon}
             <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
             <p className="text-gray-600">{item.desc}</p>
           </div>
