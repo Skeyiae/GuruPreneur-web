@@ -5,31 +5,31 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function requireTutor() {
   try {
-    // 1️⃣ Ambil session Clerk
+    // Ambil session Clerk
     const session = await auth();
     const clerkId = session.userId;
 
     if (!clerkId) {
-      console.log("❌ User not logged in (Clerk ID missing)");
+      console.log("User not logged in (Clerk ID missing)");
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    // 2️⃣ Cari tutor aktif
+    //  Cari tutor aktif
     const tutor = await prisma.tutor.findUnique({
       where: { clerkId },
     });
 
     if (!tutor || !tutor.isActive) {
-      console.log("❌ User is not an active tutor");
+      console.log("User is not an active tutor");
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
-    console.log("✅ User is an active tutor", tutor.id);
+    console.log(" User is an active tutor", tutor.id);
 
-    // 3️⃣ Kembalikan tutor agar bisa digunakan di handler
+    //  Kembalikan tutor agar bisa digunakan di handler
     return tutor;
   } catch (err: any) {
-    console.error("❌ Error in requireTutor:", err);
+    console.error("Error in requireTutor:", err);
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 }
