@@ -9,7 +9,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation"; 
+import { usePathname } from "next/navigation";
 
 
 type TutorStatus = {
@@ -26,7 +26,7 @@ export default function Navbar() {
   });
   const [loadingTutor, setLoadingTutor] = useState(true);
 
-    // Helper function to check if a path is active
+  // Helper function to check if a path is active
   const isActive = (path: string) => {
     if (path === "/") {
       return pathname === "/";
@@ -67,9 +67,13 @@ export default function Navbar() {
       >
         <ul className="flex gap-10">
           <li>
-            <a href="/" className="hover:bg-blue-100 p-2 rounded-md">
-              Home
-            </a>
+            <a
+              href="/"
+              className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
+            ></a>
           </li>
           <li>
             <a href="/benefits" className="hover:bg-blue-100 p-2 rounded-md">
