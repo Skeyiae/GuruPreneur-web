@@ -9,6 +9,8 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation"; 
+
 
 type TutorStatus = {
   isTutor: boolean;
@@ -17,11 +19,20 @@ type TutorStatus = {
 
 export default function Navbar() {
   const { userId } = useAuth();
+  const pathname = usePathname();
   const [tutorStatus, setTutorStatus] = useState<TutorStatus>({
     isTutor: false,
     isActive: false,
   });
   const [loadingTutor, setLoadingTutor] = useState(true);
+
+    // Helper function to check if a path is active
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(path);
+  };
 
   useEffect(() => {
     if (!userId) {
