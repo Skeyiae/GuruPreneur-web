@@ -62,12 +62,20 @@ export default function TutorDashboardClient({ courses }: Props) {
             </p>
 
             <div className="flex gap-3 text-sm mt-2">
+              <a
+                href={`/tutor/courses/${course.id}`}
+                className="text-green-600"
+              >
+                Manage
+              </a>
+
               <button
                 className="text-blue-600"
                 onClick={() => setEditing(course)}
               >
                 Edit
               </button>
+
               <button
                 className="text-red-600"
                 onClick={async () => {
