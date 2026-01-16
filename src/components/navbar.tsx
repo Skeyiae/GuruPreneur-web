@@ -104,7 +104,10 @@ export default function Navbar() {
             <li>
               <a
                 href="/tutor/apply-tutor"
-                className="hover:bg-blue-100 p-2 rounded-md"
+                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/apply-tutor")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
               >
                 Become Tutor
               </a>
@@ -115,7 +118,10 @@ export default function Navbar() {
             <li>
               <a
                 href="/tutor/status"
-                className="hover:bg-blue-100 p-2 rounded-md"
+                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/status")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
               >
                 Status Pengajuan
               </a>
@@ -126,7 +132,10 @@ export default function Navbar() {
             <li>
               <a
                 href="/tutor/dashboard"
-                className="hover:bg-blue-100 p-2 rounded-md font-semibold"
+                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/dashboard")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
               >
                 Dashboard Tutor
               </a>
