@@ -3,11 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function EnrollButton({ courseId }: { courseId: number }) {
+export default function EnrollButton({ 
+  courseId, 
+  isEnrolled 
+}: { 
+  courseId: number;
+  isEnrolled?: boolean;
+}) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleEnroll = async () => {
+    if (isEnrolled) {
+      return; // Don't allow re-enrollment
+    }
+
     try {
       setLoading(true);
 
@@ -32,6 +42,17 @@ export default function EnrollButton({ courseId }: { courseId: number }) {
       setLoading(false);
     }
   };
+
+  if (isEnrolled) {
+    return (
+      <button
+        disabled
+        className="w-full bg-green-600 text-white py-3 rounded-lg cursor-not-allowed opacity-70"
+      >
+        ✓ Sudah Terdaftar
+      </button>
+    );
+  }
 
   return (
     <button

@@ -1,5 +1,6 @@
 // app/courses/[id]/page.tsx
 import { prisma } from "@/../lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 import EnrollButton from "@/components/enroll-button";
 
 export const dynamic = "force-dynamic";
@@ -23,12 +24,34 @@ type CourseWithRelations = {
   chapters: { id: number; title: string }[];
 };
 
+
 export default async function CourseDetailPage({ params }: PageProps) {
   const courseId = Number(params.id);
 
   if (isNaN(courseId)) {
     return <div className="p-10 text-red-500">Invalid course id</div>;
   }
+
+    // Get current user's enrollment status
+    const { userId: clerkId } = await auth();
+    let isEnrolled = false;
+  
+    if (clerkId) {
+      const user = await prisma.user.findUnique({
+        where: { clerkId },
+      });
+  
+      if (user) {
+        const enrollment = await prisma.enrollment.findFirst({
+          where: {
+            userId: user.id,
+            courseId,
+          },
+        });
+        isEnrolled = !!enrollment;
+      }
+    }
+  
 
   const course = (await prisma.course.findUnique({
     where: { id: courseId },
@@ -78,7 +101,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
               </p>
             </div>
 
-            <EnrollButton courseId={course.id} />
+            <EnrollButton courseId={course.id} isEnrolled={isEnrolled} />
 
             <p className="text-xs text-gray-500 text-center">
               Akses penuh setelah mendaftar
