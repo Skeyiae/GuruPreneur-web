@@ -79,15 +79,21 @@ export default function Navbar() {
             <a
               href="/benefits"
               className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/benefits")
-                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
-                  : ""
+                ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                : ""
                 }`}
             >
               Benefits
             </a>
           </li>
           <li>
-            <a href="/about" className="hover:bg-blue-100 p-2 rounded-md">
+            <a
+              href="/about"
+              className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/about")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
+            >
               About
             </a>
           </li>
