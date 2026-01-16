@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 /* ENUMS */
@@ -21,14 +22,14 @@ enum TutorApplicationStatus {
   REJECTED
 }
 
-/* MODELS */
+/* USER */
 
 model User {
   id        Int      @id @default(autoincrement())
   clerkId   String   @unique
   role      UserRole @default(USER)
 
-  tutor       Tutor?
+  tutor        Tutor?
   enrollments Enrollment[]
 
   createdAt DateTime @default(now())
@@ -87,6 +88,25 @@ model Chapter {
 
   course   Course @relation(fields: [courseId], references: [id])
   courseId Int
+
+  lessons  Lesson[]
+}
+
+/* LESSON / MATERI */
+
+model Lesson {
+  id        Int      @id @default(autoincrement())
+
+  title     String
+  content   String?   // materi teks
+  videoUrl  String?   // link video dari Cloudinary
+
+  order     Int       @default(0) // urutan dalam chapter
+
+  chapter   Chapter   @relation(fields: [chapterId], references: [id])
+  chapterId Int
+
+  createdAt DateTime  @default(now())
 }
 
 /* ENROLLMENT */
