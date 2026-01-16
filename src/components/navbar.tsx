@@ -70,18 +70,30 @@ export default function Navbar() {
             <a
               href="/"
               className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/")
-                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
-                  : ""
+                ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                : ""
                 }`}
-            ></a>
+            >Home</a>
           </li>
           <li>
-            <a href="/benefits" className="hover:bg-blue-100 p-2 rounded-md">
+            <a
+              href="/benefits"
+              className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/benefits")
+                ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                : ""
+                }`}
+            >
               Benefits
             </a>
           </li>
           <li>
-            <a href="/about" className="hover:bg-blue-100 p-2 rounded-md">
+            <a
+              href="/about"
+              className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/about")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
+            >
               About
             </a>
           </li>
@@ -92,7 +104,10 @@ export default function Navbar() {
             <li>
               <a
                 href="/tutor/apply-tutor"
-                className="hover:bg-blue-100 p-2 rounded-md"
+                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/apply-tutor")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
               >
                 Become Tutor
               </a>
@@ -103,7 +118,10 @@ export default function Navbar() {
             <li>
               <a
                 href="/tutor/status"
-                className="hover:bg-blue-100 p-2 rounded-md"
+                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/status")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
               >
                 Status Pengajuan
               </a>
@@ -114,7 +132,10 @@ export default function Navbar() {
             <li>
               <a
                 href="/tutor/dashboard"
-                className="hover:bg-blue-100 p-2 rounded-md font-semibold"
+                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/dashboard")
+                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+                  : ""
+                }`}
               >
                 Dashboard Tutor
               </a>
