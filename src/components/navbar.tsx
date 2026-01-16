@@ -73,7 +73,7 @@ export default function Navbar() {
                   ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
                   : ""
                 }`}
-            ></a>
+            >Home</a>
           </li>
           <li>
             <a href="/benefits" className="hover:bg-blue-100 p-2 rounded-md">
