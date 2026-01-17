@@ -1,4 +1,5 @@
 import { GiSkills } from "react-icons/gi";
+import { FaBriefcase } from "react-icons/fa";
 export default function BenefitsPage() {
   const benefits = [
     {
@@ -9,7 +10,7 @@ export default function BenefitsPage() {
     {
       title: "Peluang Karier Luas",
       desc: "Buka jalan menjadi 3D Artist, Game Asset Designer, Animator, hingga Freelance 3D Creator.",
-      icon: "💼",
+      icon: <FaBriefcase />,
     },
     {
       title: "Belajar dari Praktisi",
