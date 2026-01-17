@@ -99,6 +99,7 @@ model Lesson {
   title     String
   content   String?   // materi teks
   videoUrl  String?   // link video dari Cloudinary
+  fileUrl   String?   // URL file materi (PDF, DOC, dll)
 
   order     Int       @default(0) // urutan dalam chapter
 
