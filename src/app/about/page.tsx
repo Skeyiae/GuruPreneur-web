@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { FaLink } from "react-icons/fa";
 import { FaTools } from "react-icons/fa";
+import { BsGlobeAsiaAustralia } from "react-icons/bs";
 
 export default function AboutPage() {
   return (
@@ -75,7 +76,7 @@ export default function AboutPage() {
               {
                 title: "Fleksibel & Online",
                 desc: "Belajar kapan saja dan di mana saja sesuai jadwalmu.",
-                icon: "🌍",
+                icon: <BsGlobeAsiaAustralia />,
               },
             ].map((item, i) => (
               <div
