@@ -1,6 +1,7 @@
 import { GiSkills } from "react-icons/gi";
 import { FaBriefcase } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
+import { FaFolder } from "react-icons/fa";
 
 export default function BenefitsPage() {
   const benefits = [
@@ -22,7 +23,7 @@ export default function BenefitsPage() {
     {
       title: "Portofolio Siap Pakai",
       desc: "Setiap project yang kamu buat bisa langsung dijadikan portofolio untuk melamar kerja atau freelance.",
-      icon: "📁",
+      icon: <FaFolder />,
     },
     {
       title: "Kreativitas Tanpa Batas",
