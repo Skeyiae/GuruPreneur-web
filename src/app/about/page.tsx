@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FaLink } from "react-icons/fa";
 
 export default function AboutPage() {
   return (
@@ -58,7 +59,7 @@ export default function AboutPage() {
               {
                 title: "Menghubungkan Murid & Tutor",
                 desc: "Kami mempertemukan murid dengan tutor yang sesuai dengan kebutuhan skill mereka.",
-                icon: "🔗",
+                icon: <FaLink />,
               },
               {
                 title: "Pembelajaran Praktis",
