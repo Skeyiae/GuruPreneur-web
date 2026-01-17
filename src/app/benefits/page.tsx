@@ -1,9 +1,10 @@
+import { GiSkills } from "react-icons/gi";
 export default function BenefitsPage() {
   const benefits = [
     {
       title: "Skill Industri Nyata",
       desc: "Pelajari Blender 3D dengan standar industri yang digunakan di game, film, arsitektur, dan animasi profesional.",
-      icon: "🎮",
+      icon: <GiSkills />,
     },
     {
       title: "Peluang Karier Luas",
