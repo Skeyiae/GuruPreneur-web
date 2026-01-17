@@ -1,5 +1,7 @@
 import { GiSkills } from "react-icons/gi";
 import { FaBriefcase } from "react-icons/fa";
+import { PiStudentBold } from "react-icons/pi";
+
 export default function BenefitsPage() {
   const benefits = [
     {
@@ -15,7 +17,7 @@ export default function BenefitsPage() {
     {
       title: "Belajar dari Praktisi",
       desc: "Dibimbing langsung oleh mentor berpengalaman yang aktif di dunia kerja, bukan sekadar teori.",
-      icon: "👨‍🏫",
+      icon: <PiStudentBold />,
     },
     {
       title: "Portofolio Siap Pakai",
