@@ -87,10 +87,10 @@ export async function POST(
           },
         },
       });
-      console.log("✅ Tutor created for user:", user.id);
+      console.log("Tutor created for user:", user.id);
     }
 
-    console.log("✅ Application approved & tutor created:", applicationId);
+    console.log("Application approved & tutor created:", applicationId);
     return NextResponse.json({ success: true, message: "Tutor approved & activated" });
   } catch (err: any) {
     console.error("Error approving application:", err);
