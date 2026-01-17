@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FaLink } from "react-icons/fa";
 import { FaTools } from "react-icons/fa";
 import { BsGlobeAsiaAustralia } from "react-icons/bs";
-
+import { FaCheckDouble } from "react-icons/fa6";
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -71,7 +71,7 @@ export default function AboutPage() {
               {
                 title: "Verifikasi Tutor",
                 desc: "Setiap tutor melalui proses seleksi untuk menjaga kualitas.",
-                icon: "✅",
+                icon: <FaCheckDouble />,
               },
               {
                 title: "Fleksibel & Online",
