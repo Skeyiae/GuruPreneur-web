@@ -10,30 +10,44 @@ import { Separator } from "@/components/ui/separator";
 import { RejectDialog } from "@/components/admin/rejectdialog";
 
 export default function TutorApplicationDetailPage() {
-  const { id } = useParams();
+  const params = useParams();
   const router = useRouter();
+  
+  // Ensure id is a string (useParams can return string | string[])
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
   const [app, setApp] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [rejectOpen, setRejectOpen] = useState(false);
 
   useEffect(() => {
+    if (!id) {
+      setLoading(false);
+      return;
+    }
+    
     fetch(`/api/admin/tutor-applications/${id}`, {
       credentials: "include", // penting agar Clerk session dikirim
     })
       .then(async (res) => {
         if (!res.ok) {
-          const err = await res.json();
+          const err = await res.json().catch(() => ({ message: "Failed to fetch" }));
           console.error("API ERROR:", err);
           return null;
         }
         return res.json();
       })
       .then(setApp)
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        setApp(null);
+      })
       .finally(() => setLoading(false));
   }, [id]);
 
   async function handleApprove() {
+    if (!id) return;
+    
     const res = await fetch(`/api/admin/tutor-applications/${id}/approve`, {
       method: "POST",
       credentials: "include",
@@ -45,6 +59,8 @@ export default function TutorApplicationDetailPage() {
   }
 
   async function handleReject(reason: string) {
+    if (!id) return;
+    
     const res = await fetch(`/api/admin/tutor-applications/${id}/reject`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -58,7 +74,16 @@ export default function TutorApplicationDetailPage() {
   }
 
   if (loading) return <p className="p-6">Loading...</p>;
-  if (!app) return <p className="p-6">Not found</p>;
+  if (!app) {
+    return (
+      <div className="max-w-3xl mx-auto p-6">
+        <p className="text-red-500">Application not found</p>
+        <Button onClick={() => router.push("/admin/tutor-applications")} className="mt-4">
+          Back to Applications
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">

@@ -1,5 +1,6 @@
 import { prisma } from "@/../lib/prisma";
 import CreateLessonForm from "@/components/tutor/create-lesson-form";
+import VideoPlayer from "@/components/video-player";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -48,7 +49,7 @@ export default async function ChapterDetailPage({
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4">Tambah Lesson Baru</h2>
           <p className="text-sm text-gray-600 mb-4">
-            Upload file materi (PDF, DOC, DOCX, TXT) atau masukkan video URL
+            Upload file materi (PDF, DOC, DOCX, TXT) atau masukkan video URL dari YouTube atau Cloudinary
           </p>
           <CreateLessonForm chapterId={chapterId} />
         </div>
@@ -64,41 +65,69 @@ export default async function ChapterDetailPage({
               Belum ada lesson. Tambah lesson baru di atas dengan upload file.
             </p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-6">
               {chapter.lessons.map((lesson, index) => (
                 <div
                   key={lesson.id}
-                  className="border rounded-lg p-4 hover:bg-gray-50 transition"
+                  className="border rounded-lg p-6 bg-white shadow-sm"
                 >
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3 mb-4">
+                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-black text-white text-sm font-semibold flex-shrink-0">
+                      {index + 1}
+                    </span>
                     <div className="flex-1">
-                      <div className="flex items-center gap-3">
-                        <span className="w-8 h-8 flex items-center justify-center rounded-full bg-black text-white text-sm font-semibold">
-                          {index + 1}
-                        </span>
-                        <h3 className="font-semibold text-lg text-gray-900">
-                          {lesson.title}
-                        </h3>
-                      </div>
-                      <div className="mt-2 space-y-1">
+                      <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                        {lesson.title}
+                      </h3>
+                      <div className="flex flex-wrap gap-2 text-xs text-gray-500">
                         {lesson.videoUrl && (
-                          <p className="text-xs text-gray-600">
-                            🎥 Video URL tersedia
-                          </p>
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                            🎥 Video
+                          </span>
                         )}
                         {lesson.fileUrl && (
-                          <p className="text-xs text-gray-600">
-                            📄 File materi tersedia
-                          </p>
+                          <span className="px-2 py-1 bg-green-100 text-green-700 rounded">
+                            📄 File
+                          </span>
                         )}
                         {lesson.content && (
-                          <p className="text-xs text-gray-600">
-                            📝 Konten teks tersedia
-                          </p>
+                          <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded">
+                            📝 Teks
+                          </span>
                         )}
                       </div>
                     </div>
                   </div>
+
+                  {/* Video Player */}
+                  {lesson.videoUrl && (
+                    <div className="mb-4">
+                      <VideoPlayer videoUrl={lesson.videoUrl} />
+                    </div>
+                  )}
+
+                  {/* File Download */}
+                  {lesson.fileUrl && (
+                    <div className="mb-4">
+                      <a
+                        href={lesson.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition text-sm font-medium"
+                      >
+                        📄 Download File Materi
+                      </a>
+                    </div>
+                  )}
+
+                  {/* Content Text */}
+                  {lesson.content && (
+                    <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                        {lesson.content}
+                      </p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

@@ -28,9 +28,21 @@ export default function AdminTutorApplicationsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/admin/tutor-applications")
-      .then((res) => res.json())
+    fetch("/api/admin/tutor-applications", {
+      credentials: "include",
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          console.error("Failed to fetch applications");
+          return [];
+        }
+        return res.json();
+      })
       .then(setData)
+      .catch((error) => {
+        console.error("Error fetching applications:", error);
+        setData([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 

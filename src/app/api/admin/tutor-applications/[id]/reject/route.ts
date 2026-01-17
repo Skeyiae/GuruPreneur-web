@@ -49,9 +49,18 @@ export async function POST(
     return NextResponse.json({ success: true, message: "Tutor application rejected" });
   } catch (err: any) {
     console.error("❌ Error rejecting application:", err);
+    
     if (err.message === "FORBIDDEN") {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    
+    if (err.message === "UNAUTHORIZED") {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    
+    return NextResponse.json({ 
+      message: "Internal server error",
+      error: err.message 
+    }, { status: 500 });
   }
 }

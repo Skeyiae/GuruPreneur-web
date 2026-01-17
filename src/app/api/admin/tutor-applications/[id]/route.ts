@@ -32,6 +32,18 @@ export async function GET(
     return NextResponse.json(application);
   } catch (err: any) {
     console.error("❌ Error GET single application:", err);
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    
+    if (err.message === "FORBIDDEN") {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+    }
+    
+    if (err.message === "UNAUTHORIZED") {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    
+    return NextResponse.json({ 
+      message: "Internal server error",
+      error: err.message 
+    }, { status: 500 });
   }
 }

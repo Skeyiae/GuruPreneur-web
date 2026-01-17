@@ -99,6 +99,10 @@ export async function POST(
     if (err.message === "FORBIDDEN") {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
+    
+    if (err.message === "UNAUTHORIZED") {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
     // Handle Prisma unique constraint errors
     if (err.code === "P2002") {
