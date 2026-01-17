@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { FaLink } from "react-icons/fa";
+import { FaTools } from "react-icons/fa";
 
 export default function AboutPage() {
   return (
@@ -64,7 +65,7 @@ export default function AboutPage() {
               {
                 title: "Pembelajaran Praktis",
                 desc: "Fokus pada praktik langsung, bukan hanya teori.",
-                icon: "🛠️",
+                icon: <FaTools />,
               },
               {
                 title: "Verifikasi Tutor",
