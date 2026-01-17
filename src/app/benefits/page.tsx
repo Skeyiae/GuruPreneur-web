@@ -2,6 +2,7 @@ import { GiSkills } from "react-icons/gi";
 import { FaBriefcase } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
 import { FaFolder } from "react-icons/fa";
+import { FaPalette } from "react-icons/fa";
 
 export default function BenefitsPage() {
   const benefits = [
@@ -28,7 +29,7 @@ export default function BenefitsPage() {
     {
       title: "Kreativitas Tanpa Batas",
       desc: "Tuangkan ide kreatifmu ke dalam bentuk 3D: karakter, environment, product visual, dan lainnya.",
-      icon: "🎨",
+      icon: <FaPalette />,
     },
     {
       title: "Belajar Fleksibel",
