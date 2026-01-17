@@ -3,6 +3,7 @@ import { FaBriefcase } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
 import { FaFolder } from "react-icons/fa";
 import { FaPalette } from "react-icons/fa";
+import { IoIosTimer } from "react-icons/io";
 
 export default function BenefitsPage() {
   const benefits = [
@@ -34,7 +35,7 @@ export default function BenefitsPage() {
     {
       title: "Belajar Fleksibel",
       desc: "Atur jadwal belajar sesuai waktu luangmu, bisa dari mana saja dan kapan saja.",
-      icon: "⏰",
+      icon: <IoIosTimer />,
     },
   ];
 
