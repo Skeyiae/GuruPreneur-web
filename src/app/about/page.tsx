@@ -139,7 +139,7 @@ export default function AboutPage() {
               Daftar Jadi Tutor
             </a>
             <a
-              href="/homepage"
+              href="/"
               className="border border-white px-8 py-3 rounded-xl font-medium hover:bg-white hover:text-black transition"
             >
               Mulai Belajar
