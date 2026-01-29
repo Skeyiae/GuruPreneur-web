@@ -10,6 +10,7 @@ import {
 } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 
 
 type TutorStatus = {
@@ -25,6 +26,7 @@ export default function Navbar() {
     isActive: false,
   });
   const [loadingTutor, setLoadingTutor] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Helper function to check if a path is active
   const isActive = (path: string) => {
@@ -51,114 +53,157 @@ export default function Navbar() {
       });
   }, [userId]);
 
-  return (
-    <header className="w-full bg-white text-black shadow-xl flex items-center p-4 h-16 relative">
-      {/* Logo */}
-      <h1 className="text-xl font-bold ml-4">
-        <a href="/" aria-label="Homepage">
-          Skill Mentor
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  const navLinkClass = (path: string) => {
+    return `block hover:bg-blue-100 p-2 rounded-md transition text-sm md:text-base ${isActive(path)
+      ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
+      : ""
+      }`;
+  };
+
+  const NavLinks = () => (
+    <>
+      <li>
+        <a href="/" className={navLinkClass("/")}>
+          Home
         </a>
-      </h1>
+      </li>
+      <li>
+        <a href="/benefits" className={navLinkClass("/benefits")}>
+          Benefits
+        </a>
+      </li>
+      <li>
+        <a href="/about" className={navLinkClass("/about")}>
+          About
+        </a>
+      </li>
 
-      {/* Navigation */}
-      <nav
-        aria-label="Main Navigation"
-        className="flex-1 flex justify-center items-center"
-      >
-        <ul className="flex gap-10">
-          <li>
-            <a
-              href="/"
-              className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/")
-                ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
-                : ""
-                }`}
-            >Home</a>
-          </li>
-          <li>
-            <a
-              href="/benefits"
-              className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/benefits")
-                ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
-                : ""
-                }`}
-            >
-              Benefits
-            </a>
-          </li>
-          <li>
-            <a
-              href="/about"
-              className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/about")
-                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
-                  : ""
-                }`}
-            >
-              About
-            </a>
-          </li>
+      {/* ================= TUTOR LOGIC ================= */}
 
-          {/* ================= TUTOR LOGIC ================= */}
+      {!loadingTutor && userId && !tutorStatus.isTutor && (
+        <li>
+          <a
+            href="/tutor/apply-tutor"
+            className={navLinkClass("/tutor/apply-tutor")}
+          >
+            Become Tutor
+          </a>
+        </li>
+      )}
 
-          {!loadingTutor && userId && !tutorStatus.isTutor && (
-            <li>
-              <a
-                href="/tutor/apply-tutor"
-                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/apply-tutor")
-                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
-                  : ""
-                }`}
-              >
-                Become Tutor
-              </a>
-            </li>
-          )}
+      {!loadingTutor && userId && tutorStatus.isTutor && !tutorStatus.isActive && (
+        <li>
+          <a
+            href="/tutor/status"
+            className={navLinkClass("/tutor/status")}
+          >
+            Status Pengajuan
+          </a>
+        </li>
+      )}
 
-          {!loadingTutor && userId && tutorStatus.isTutor && !tutorStatus.isActive && (
-            <li>
-              <a
-                href="/tutor/status"
-                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/status")
-                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
-                  : ""
-                }`}
-              >
-                Status Pengajuan
-              </a>
-            </li>
-          )}
+      {!loadingTutor && userId && tutorStatus.isTutor && tutorStatus.isActive && (
+        <li>
+          <a
+            href="/tutor/dashboard"
+            className={navLinkClass("/tutor/dashboard")}
+          >
+            Dashboard Tutor
+          </a>
+        </li>
+      )}
+    </>
+  );
 
-          {!loadingTutor && userId && tutorStatus.isTutor && tutorStatus.isActive && (
-            <li>
-              <a
-                href="/tutor/dashboard"
-                className={`hover:bg-blue-100 p-2 rounded-md transition ${isActive("/tutor/dashboard")
-                  ? "bg-blue-100 font-semibold border-b-2 border-blue-600"
-                  : ""
-                }`}
-              >
-                Dashboard Tutor
-              </a>
-            </li>
-          )}
-        </ul>
-      </nav>
+  return (
+    <header className="w-full bg-white text-black shadow-xl relative">
+      <div className="flex items-center justify-between p-3 md:p-4 h-16">
+        {/* Logo */}
+        <h1 className="text-lg md:text-xl font-bold ml-2 md:ml-4 flex-shrink-0">
+          <a href="/" aria-label="Homepage">
+            Skill Mentor
+          </a>
+        </h1>
 
-      {/* Auth Buttons */}
-      <div className="flex items-center gap-4 mr-4">
-        <SignedOut>
-          <SignInButton />
-          <SignUpButton>
-            <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-              Sign Up
-            </button>
-          </SignUpButton>
-        </SignedOut>
+        {/* Desktop Navigation */}
+        <nav
+          aria-label="Main Navigation"
+          className="hidden md:flex flex-1 justify-center items-center"
+        >
+          <ul className="flex gap-6 lg:gap-10">
+            <NavLinks />
+          </ul>
+        </nav>
 
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+        {/* Auth Buttons - Desktop */}
+        <div className="hidden md:flex items-center gap-3 lg:gap-4 mr-4 flex-shrink-0">
+          <SignedOut>
+            <SignInButton />
+            <SignUpButton>
+              <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm lg:text-base h-10 lg:h-12 px-4 lg:px-5 cursor-pointer whitespace-nowrap">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
+
+        {/* Mobile Menu Button & Auth */}
+        <div className="flex md:hidden items-center gap-2 mr-2 flex-shrink-0">
+          <SignedIn>
+            <div className="mr-2">
+              <UserButton />
+            </div>
+          </SignedIn>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-md hover:bg-gray-100 transition"
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Navigation Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-gray-200 bg-white">
+          <nav aria-label="Mobile Navigation" className="p-4">
+            <ul className="flex flex-col gap-2">
+              <NavLinks />
+            </ul>
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <SignedOut>
+                <div className="flex flex-col gap-2">
+                  <SignInButton>
+                    <button className="w-full text-left hover:bg-blue-100 p-2 rounded-md transition">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                  <SignUpButton>
+                    <button className="w-full bg-[#6c47ff] text-white rounded-full font-medium text-base h-12 px-5 cursor-pointer">
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </div>
+              </SignedOut>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
