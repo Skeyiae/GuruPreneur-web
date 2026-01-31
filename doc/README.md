@@ -6,6 +6,7 @@
 - [Struktur Project](#struktur-project)
 - [Database Schema](#database-schema)
 - [API Endpoints](#api-endpoints)
+- [Dokumentasi Halaman (Pages)](PAGES.md)
 - [Fitur Utama](#fitur-utama)
 - [Setup & Development](#setup--development)
 - [Environment Variables](#environment-variables)
